@@ -8,7 +8,6 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"os"
 	"runtime/debug"
-	"strings"
 )
 
 func recovery(ctx *fiber.Ctx) error {
@@ -52,44 +51,4 @@ func logging(app *fiber.App) {
 		Format:     "${time} -- ${status} -- ${method} ${path} ${queryParams} ${latency} \n",
 		TimeFormat: "2006-01-02 15:04:05.00000",
 	}))
-}
-
-// Middleware-Funktion für die Authentifizierung
-func authMiddleware(ctx *fiber.Ctx) error {
-	auth := //auth object
-
-		//response erstellen
-		ctx.Locals("response", Response{
-			true,
-			"",
-			[]string{},
-			nil,
-			ctx,
-		})
-	response := ctx.Locals("response").(Response)
-	userToken := ctx.Get("Authorization", "")
-	if userToken == "" {
-		response.Access = false
-		response.Msg = "Melde dich erneut an"
-		response.Error = append(response.Error, "Kein JWT gesetzt")
-		response.send(fiber.StatusUnauthorized)
-		return nil
-	}
-	//Bearer-Token ??
-	tmp := strings.SplitAfter(userToken, "Bearer ")
-	if len(tmp) != 2 {
-		response.Access = false
-		response.Msg = "Melde dich erneut an"
-		response.Error = append(response.Error, "Token has false format")
-		response.send(fiber.StatusUnauthorized)
-		return nil
-	}
-	userToken = tmp[1]
-	// Token überprüfen
-
-	// Token im Kontext speichern
-	ctx.Locals("token", "###token###")
-	// Nächsten Handler aufrufen
-	ctx.Next()
-	return nil
 }
