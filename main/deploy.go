@@ -79,18 +79,12 @@ func deployFromGitea(ctx *fiber.Ctx) error {
 		fmt.Println(err)
 		return err
 	}
-	cmd := exec.Command("bash", "-c", "cd ../ && rm -rf"+cloneDirectory)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	err = cmd.Run()
-	if err != nil {
-		return nil
-	}
+
 	return nil
 }
 
 func httpsCloneRepo(baseURL, fullRepoName string) (string, error) {
-	cloneDirectory := uuid.New().String()
+	cloneDirectory := fullRepoName + "-" + uuid.New().String()
 
 	username := os.Getenv(fullRepoName + "_name")
 	accessToken := os.Getenv(fullRepoName + "_token")
