@@ -38,7 +38,7 @@ func main() {
 
 	//manage POST-Request
 	app.Post("/deploy-from-github", deployFromGithub)
-	app.Post("/", deployFromGitea)
+	app.Post("/deploy-from-gitea", deployFromGitea)
 
 	fmt.Println("▶️ start server")
 	err := app.Listen(":3000")
